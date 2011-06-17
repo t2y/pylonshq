@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import logging
 
@@ -72,24 +73,24 @@ def application_created_subscriber(event):
     f.close()
 
 if __name__ == '__main__':
-    # configuration settings
+    # settings 設定
     settings = {}
     settings['reload_all'] = True
     settings['debug_all'] = True
     settings['mako.directories'] = os.path.join(here, 'templates')
     settings['db'] = os.path.join(here, 'tasks.db')
-    # session factory
+    # セッションファクトリー
     session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
-    # configuration setup
+    # configuration 設定
     config = Configurator(settings=settings, session_factory=session_factory)
-    # routes setup
+    # ルート設定
     config.add_route('list', '/')
     config.add_route('new', '/new')
     config.add_route('close', '/close/{id}')
-    # static view setup
+    # 静的ビュー設定
     config.add_static_view('static', os.path.join(here, 'static'))
-    # scan for @view_config and @subscriber decorators
+    # @view_config と @subscriber デコレーターの検出
     config.scan()
-    # serve app
+    # app サーバー
     app = config.make_wsgi_app()
     serve(app, host='0.0.0.0')
